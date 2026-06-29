@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Appointment Confirmed | SQMS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<nav>
+    <div class="logo">🏥 SQMS</div>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/appointment">Appointment</a>
+        <a href="/track">Track Queue</a>
+        <a href="/logout">Logout</a>
+    </div>
+</nav>
+
+<div class="success-card">
+    <div class="checkmark">✓</div>
+    <h1>Appointment Confirmed</h1>
+    <p>Your appointment has been booked successfully.</p>
+    <div class="token-display">{{ token }}</div>
+    <p style="color:#64748b; font-size:14px;">Save this token to track your queue.</p>
+    <div class="button-group">
+        <a href="/track" class="btn">Track Queue</a>
+        <a href="/"      class="btn secondary-btn">Home</a>
+    </div>
+</div>
+
+<footer>
+    <p>© 2026 Smart Healthcare Queue Management System</p>
+</footer>
+</body>
+</html>

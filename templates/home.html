@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SQMS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<nav>
+    <div class="logo">🏥 SQMS</div>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        {% if session.user_id %}
+            <a href="/appointment">Appointment</a>
+            <a href="/track">Track Queue</a>
+            <a href="/logout">Logout</a>
+        {% else %}
+            <a href="/register">Register</a>
+            <a href="/login">Login</a>
+        {% endif %}
+        {% if session.is_admin %}
+            <a href="/admin">Admin</a>
+        {% endif %}
+    </div>
+</nav>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% for category, message in messages %}
+    <div class="flash flash-{{ category }}">{{ message }}</div>
+  {% endfor %}
+{% endwith %}
+
+<section class="hero">
+    <h1>Smart Healthcare Queue Management System</h1>
+    <p>Book appointments instantly and reduce waiting time.</p>
+    {% if session.user_id %}
+        <a href="/appointment" class="btn">Book Appointment</a>
+    {% else %}
+        <a href="/register" class="btn">Get Started</a>
+    {% endif %}
+</section>
+
+<section class="features">
+    <div class="feature-card">
+        <h3>Appointment Booking</h3>
+        <p>Book appointments instantly with token confirmation.</p>
+    </div>
+    <div class="feature-card">
+        <h3>Smart Queue</h3>
+        <p>Track your live token status and queue position.</p>
+    </div>
+    <div class="feature-card">
+        <h3>Admin Dashboard</h3>
+        <p>Manage and monitor all appointments efficiently.</p>
+    </div>
+</section>
+
+<footer>
+    <p>© 2026 Smart Healthcare Queue Management System</p>
+    <p style="margin-top:8px;">
+        <a href="/admin-login" style="color:rgba(255,255,255,0.4); font-size:13px; text-decoration:none;">
+            Admin
+        </a>
+    </p>
+</footer>
+</body>
+</html>

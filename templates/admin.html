@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard | SQMS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<nav>
+    <div class="logo">🏥 SQMS Admin</div>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/admin">Dashboard</a>
+        <a href="/admin-logout">Logout</a>
+    </div>
+</nav>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% for category, message in messages %}
+    <div class="flash flash-{{ category }}">{{ message }}</div>
+  {% endfor %}
+{% endwith %}
+
+<div class="dashboard">
+    <div class="stat-card">
+        <h3>Total Appointments</h3>
+        <h1>{{ appointments | length }}</h1>
+    </div>
+    <div class="stat-card" style="margin-left:20px;">
+        <h3>Pending</h3>
+        <h1 style="color:#f59e0b;">
+            {{ appointments | selectattr('8', 'equalto', 'Pending') | list | length }}
+        </h1>
+    </div>
+    <div class="stat-card" style="margin-left:20px;">
+        <h3>Completed</h3>
+        <h1 style="color:#10b981;">
+            {{ appointments | selectattr('8', 'equalto', 'Completed') | list | length }}
+        </h1>
+    </div>
+</div>
+
+<div class="card" style="width:92%; max-width:1300px;">
+    <h2>Appointment Management</h2>
+
+    <form action="/search" method="POST" style="display:flex; gap:10px; margin-bottom:16px;">
+        <input type="text" name="token" placeholder="Search by Token Number" style="flex:1;">
+        <button type="submit">Search</button>
+        <a href="/admin" class="btn" style="padding:10px 20px;">Clear</a>
+    </form>
+
+    <table class="admin-table">
+        <tr>
+            <th>ID</th>
+            <th>Hospital</th>
+            <th>Department</th>
+            <th>Doctor</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Token</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        {% for a in appointments %}
+        <tr>
+            <td>{{ a[0] }}</td>
+            <td>{{ a[2] }}</td>
+            <td>{{ a[3] }}</td>
+            <td>{{ a[4] }}</td>
+            <td>{{ a[5] }}</td>
+            <td>{{ a[6] }}</td>
+            <td>{{ a[7] }}</td>
+            <td>
+                <span class="status-badge status-{{ a[8] | lower if a[8] else 'pending' }}">
+                    {{ a[8] or 'Pending' }}
+                </span>
+            </td>
+            <td style="display:flex; gap:6px; flex-wrap:wrap; justify-content:center;">
+                {% if a[8] != 'Completed' %}
+                <a href="/complete/{{ a[0] }}" class="action-btn complete-btn">✓ Done</a>
+                {% else %}
+                <a href="/pending/{{ a[0] }}"  class="action-btn pending-btn">↺ Pending</a>
+                {% endif %}
+                <a href="/delete/{{ a[0] }}"
+                   onclick="return confirm('Delete this appointment?')"
+                   class="delete-btn">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<footer>
+    <p>© 2026 Smart Healthcare Queue Management System</p>
+</footer>
+</body>
+</html>
